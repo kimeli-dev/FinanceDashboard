@@ -6,15 +6,17 @@ import { scrypt, randomBytes, timingSafeEqual } from "crypto";
 import { promisify } from "util";
 import { storage } from "./storage";
 import { User } from "@shared/schema";
-import { createMemoryStore } from "memorystore";
+import memorystore from "memorystore";
 
+// Define passport User type
 declare global {
   namespace Express {
-    interface User extends User {}
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    interface User extends Omit<User, 'password'> {}
   }
 }
 
-const MemoryStore = createMemoryStore(session);
+const MemoryStore = memorystore(session);
 const scryptAsync = promisify(scrypt);
 
 async function hashPassword(password: string) {

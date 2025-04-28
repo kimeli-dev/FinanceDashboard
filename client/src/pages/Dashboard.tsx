@@ -21,20 +21,19 @@ export default function Dashboard() {
   });
 
   const studentCard = cards?.find(card => card.type === "student");
-  const staffCard = cards?.find(card => card.type === "staff");
-
+  
   return (
-    <div>
+    <div className="dark:bg-gray-900 dark:text-white min-h-screen">
       {/* Page Heading */}
       <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Cafeteria Card Dashboard</h1>
-          <p className="text-gray-500 mt-1">Manage your meal cards and view transaction history</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Cafeteria Card Dashboard</h1>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">Manage your student meal card and view transaction history</p>
         </div>
         <div className="mt-4 md:mt-0 flex space-x-2">
           <Button 
             variant="outline" 
-            className="border-primary-600 text-primary-600 hover:bg-primary-50" 
+            className="border-primary-600 text-primary-600 hover:bg-primary-50 dark:border-primary-400 dark:text-primary-400 dark:hover:bg-gray-800" 
             size="sm"
           >
             <IoQrCodeOutline className="mr-1 h-4 w-4" />
@@ -42,7 +41,7 @@ export default function Dashboard() {
           </Button>
           <Button 
             variant="outline" 
-            className="border-primary-600 text-primary-600 hover:bg-primary-50" 
+            className="border-primary-600 text-primary-600 hover:bg-primary-50 dark:border-primary-400 dark:text-primary-400 dark:hover:bg-gray-800" 
             size="sm"
           >
             <IoWifiOutline className="mr-1 h-4 w-4" />
@@ -61,26 +60,16 @@ export default function Dashboard() {
           <>
             {/* Student Card Balance */}
             {studentCard && (
-              <BalanceCard 
-                type="student"
-                balance={studentCard.balance.toString()}
-                cardNumber={studentCard.cardNumber}
-                expiryDate={studentCard.expiryDate}
-                lastUsedAt={studentCard.lastUsedAt || undefined}
-                isActive={studentCard.isActive}
-              />
-            )}
-
-            {/* Staff Card Balance */}
-            {staffCard && (
-              <BalanceCard 
-                type="staff"
-                balance={staffCard.balance.toString()}
-                cardNumber={staffCard.cardNumber}
-                expiryDate={staffCard.expiryDate}
-                lastUsedAt={staffCard.lastUsedAt || undefined}
-                isActive={staffCard.isActive}
-              />
+              <div className="lg:col-span-2">
+                <BalanceCard 
+                  type="student"
+                  balance={studentCard.balance.toString()}
+                  cardNumber={studentCard.cardNumber}
+                  expiryDate={studentCard.expiryDate}
+                  lastUsedAt={studentCard.lastUsedAt || undefined}
+                  isActive={studentCard.isActive}
+                />
+              </div>
             )}
 
             {/* Monthly Budget */}

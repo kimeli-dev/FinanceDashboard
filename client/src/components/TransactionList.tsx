@@ -1,8 +1,9 @@
-import { ArrowRight, ShoppingBag, ArrowUpRight, Home, Coffee, Film } from "lucide-react";
+import { Utensils, Coffee, ShoppingBag, Pizza, UtensilsCrossed } from "lucide-react";
 import { Transaction } from "@/lib/types";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 interface TransactionListProps {
@@ -11,36 +12,30 @@ interface TransactionListProps {
 }
 
 export default function TransactionList({ transactions, isLoading }: TransactionListProps) {
-  const getIcon = (iconType: string) => {
-    switch (iconType) {
-      case 'shopping':
+  const getMealIcon = (mealType: string) => {
+    switch (mealType.toLowerCase()) {
+      case 'breakfast':
         return (
-          <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-600">
-            <ShoppingBag className="h-6 w-6" />
-          </div>
-        );
-      case 'income':
-        return (
-          <div className="flex-shrink-0 h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
-            <ArrowUpRight className="h-6 w-6" />
-          </div>
-        );
-      case 'housing':
-        return (
-          <div className="flex-shrink-0 h-10 w-10 rounded-full bg-red-100 flex items-center justify-center text-red-600">
-            <Home className="h-6 w-6" />
-          </div>
-        );
-      case 'food':
-        return (
-          <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-600">
+          <div className="flex-shrink-0 h-10 w-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600">
             <Coffee className="h-6 w-6" />
           </div>
         );
-      case 'entertainment':
+      case 'lunch':
         return (
-          <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-600">
-            <Film className="h-6 w-6" />
+          <div className="flex-shrink-0 h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+            <Utensils className="h-6 w-6" />
+          </div>
+        );
+      case 'dinner':
+        return (
+          <div className="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+            <UtensilsCrossed className="h-6 w-6" />
+          </div>
+        );
+      case 'snack':
+        return (
+          <div className="flex-shrink-0 h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">
+            <Pizza className="h-6 w-6" />
           </div>
         );
       default:
@@ -66,14 +61,12 @@ export default function TransactionList({ transactions, isLoading }: Transaction
   };
 
   const formatAmount = (amount: number) => {
-    const isPositive = amount > 0;
     return {
-      formatted: new Intl.NumberFormat('en-US', {
+      formatted: new Intl.NumberFormat('en-KE', {
         style: 'currency',
-        currency: 'USD',
-        signDisplay: 'auto'
-      }).format(amount),
-      isPositive
+        currency: 'KES',
+        signDisplay: 'never'
+      }).format(Math.abs(amount))
     };
   };
 
@@ -81,8 +74,8 @@ export default function TransactionList({ transactions, isLoading }: Transaction
     <Card className="bg-white shadow overflow-hidden sm:rounded-lg">
       <CardHeader className="px-4 py-5 sm:px-6 flex justify-between items-center">
         <div>
-          <CardTitle className="text-lg">Recent Transactions</CardTitle>
-          <CardDescription>Your most recent card transactions.</CardDescription>
+          <CardTitle className="text-lg">Recent Meal Transactions</CardTitle>
+          <CardDescription>Your recent cafeteria purchases</CardDescription>
         </div>
         <Button variant="outline" className="text-primary-700 bg-primary-100 hover:bg-primary-200 border-0">
           View All
@@ -110,26 +103,28 @@ export default function TransactionList({ transactions, isLoading }: Transaction
             ))
           ) : (
             transactions.map((transaction) => {
-              const { formatted: formattedAmount, isPositive } = formatAmount(Number(transaction.amount));
+              const { formatted: formattedAmount } = formatAmount(Number(transaction.amount));
               
               return (
                 <div key={transaction.id} className="py-5 px-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
-                      {getIcon(transaction.iconType)}
+                      {getMealIcon(transaction.mealType)}
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">{transaction.merchant}</div>
-                        <div className="text-sm text-gray-500">{transaction.category}</div>
+                        <div className="text-sm font-medium text-gray-900">
+                          {transaction.cafeteria}
+                          <Badge variant="outline" className="ml-2 px-2 py-0 text-xs bg-gray-100">
+                            {transaction.mealType}
+                          </Badge>
+                        </div>
+                        <div className="text-sm text-gray-500">{formatDate(transaction.date)}</div>
                       </div>
                     </div>
                     <div className="flex flex-col items-end">
-                      <div className={cn(
-                        "text-sm font-medium",
-                        isPositive ? "text-green-600" : "text-gray-900"
-                      )}>
-                        {formattedAmount}
+                      <div className="text-sm font-medium text-red-600">
+                        -{formattedAmount}
                       </div>
-                      <div className="text-sm text-gray-500">{formatDate(transaction.date)}</div>
+                      <div className="text-xs text-gray-500 mt-1">Cafeteria Purchase</div>
                     </div>
                   </div>
                 </div>

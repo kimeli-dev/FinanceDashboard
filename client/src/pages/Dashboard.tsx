@@ -4,6 +4,8 @@ import BudgetCard from "@/components/BudgetCard";
 import TransactionList from "@/components/TransactionList";
 import DocumentationList from "@/components/DocumentationList";
 import { Card, Budget, Transaction } from "@/lib/types";
+import { IoCardOutline, IoQrCodeOutline, IoWifiOutline } from "react-icons/io5";
+import { Button } from "@/components/ui/button";
 
 export default function Dashboard() {
   const { data: cards, isLoading: cardsLoading } = useQuery<Card[]>({
@@ -18,14 +20,35 @@ export default function Dashboard() {
     queryKey: ['/api/transactions']
   });
 
-  const primaryCard = cards?.find(card => card.type === "primary");
-  const savingsCard = cards?.find(card => card.type === "savings");
+  const studentCard = cards?.find(card => card.type === "student");
+  const staffCard = cards?.find(card => card.type === "staff");
 
   return (
     <div>
       {/* Page Heading */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
+      <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Cafeteria Card Dashboard</h1>
+          <p className="text-gray-500 mt-1">Manage your meal cards and view transaction history</p>
+        </div>
+        <div className="mt-4 md:mt-0 flex space-x-2">
+          <Button 
+            variant="outline" 
+            className="border-primary-600 text-primary-600 hover:bg-primary-50" 
+            size="sm"
+          >
+            <IoQrCodeOutline className="mr-1 h-4 w-4" />
+            Show QR Code
+          </Button>
+          <Button 
+            variant="outline" 
+            className="border-primary-600 text-primary-600 hover:bg-primary-50" 
+            size="sm"
+          >
+            <IoWifiOutline className="mr-1 h-4 w-4" />
+            Activate NFC
+          </Button>
+        </div>
       </div>
 
       {/* Cards Section */}
@@ -36,24 +59,27 @@ export default function Dashboard() {
           </div>
         ) : (
           <>
-            {/* Primary Card Balance */}
-            {primaryCard && (
+            {/* Student Card Balance */}
+            {studentCard && (
               <BalanceCard 
-                type="primary"
-                balance={primaryCard.balance.toString()}
-                cardNumber={primaryCard.cardNumber}
-                expiryDate={primaryCard.expiryDate}
+                type="student"
+                balance={studentCard.balance.toString()}
+                cardNumber={studentCard.cardNumber}
+                expiryDate={studentCard.expiryDate}
+                lastUsedAt={studentCard.lastUsedAt || undefined}
+                isActive={studentCard.isActive}
               />
             )}
 
-            {/* Savings Card Balance */}
-            {savingsCard && (
+            {/* Staff Card Balance */}
+            {staffCard && (
               <BalanceCard 
-                type="savings"
-                balance={savingsCard.balance.toString()}
-                cardNumber={savingsCard.cardNumber}
-                expiryDate={savingsCard.expiryDate}
-                growth={savingsCard.growth?.toString()}
+                type="staff"
+                balance={staffCard.balance.toString()}
+                cardNumber={staffCard.cardNumber}
+                expiryDate={staffCard.expiryDate}
+                lastUsedAt={staffCard.lastUsedAt || undefined}
+                isActive={staffCard.isActive}
               />
             )}
 

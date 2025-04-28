@@ -1,98 +1,109 @@
-import { CreditCard, Wallet, ArrowRight, ArrowUpRight } from "lucide-react";
+import { CreditCard, CreditCardIcon, ShieldAlert, CheckCircle2, ArrowRight, MapPin } from "lucide-react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 interface BalanceCardProps {
-  type: "primary" | "savings";
+  type: "student" | "staff";
   balance: string;
   cardNumber: string;
   expiryDate: string;
-  growth?: string;
+  lastUsedAt?: string;
+  isActive?: string;
 }
 
-export default function BalanceCard({ type, balance, cardNumber, expiryDate, growth }: BalanceCardProps) {
-  const isPrimary = type === "primary";
-  const formattedBalance = new Intl.NumberFormat('en-US', {
+export default function BalanceCard({ type, balance, cardNumber, expiryDate, lastUsedAt, isActive }: BalanceCardProps) {
+  const isStudent = type === "student";
+  const cardActive = isActive === "true";
+  const formattedBalance = new Intl.NumberFormat('en-KE', {
     style: 'currency',
-    currency: 'USD'
+    currency: 'KES'
   }).format(Number(balance));
 
   return (
     <Card className={cn(
       "overflow-hidden",
-      isPrimary && "bg-gradient-to-r from-primary-700 to-primary-800 text-white"
+      isStudent ? "bg-gradient-to-r from-primary-600 to-primary-700 text-white" : "bg-gradient-to-r from-blue-600 to-blue-700 text-white"
     )}>
       <CardContent className="p-5">
-        <div className="flex items-center">
+        <div className="flex items-center justify-between">
           <div className={cn(
             "flex-shrink-0 rounded-md p-3",
-            isPrimary ? "bg-white bg-opacity-30" : "bg-primary-100"
+            "bg-white bg-opacity-30"
           )}>
-            {isPrimary ? (
-              <CreditCard className="h-8 w-8 text-white" />
-            ) : (
-              <Wallet className="h-8 w-8 text-primary-600" />
-            )}
+            <CreditCardIcon className="h-8 w-8 text-white" />
           </div>
-          <div className="ml-5 w-0 flex-1">
-            <dl>
-              <dt className={cn(
-                "text-sm font-medium truncate",
-                isPrimary ? "text-white text-opacity-70" : "text-gray-500"
-              )}>
-                {isPrimary ? "Primary Card Balance" : "Savings Account Balance"}
-              </dt>
-              <dd>
-                <div className={cn(
-                  "text-lg font-bold",
-                  isPrimary ? "text-white" : "text-gray-900"
-                )}>
-                  {formattedBalance}
-                </div>
-              </dd>
-            </dl>
-          </div>
-        </div>
-        <div className="mt-4">
-          {isPrimary ? (
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-white text-opacity-70">
-                Card ending in {cardNumber}
-              </span>
-              <span className="text-xs font-medium text-white text-opacity-70">
-                Exp: {expiryDate}
-              </span>
-            </div>
-          ) : (
-            <div className="flex items-center text-sm">
-              {growth && (
-                <span className="text-green-500 font-medium flex items-center">
-                  <ArrowUpRight className="h-4 w-4 mr-1" />
-                  {growth}% growth
-                </span>
-              )}
-              <span className="mx-2 text-gray-500">•</span>
-              <span className="text-gray-500">Last 30 days</span>
-            </div>
-          )}
-        </div>
-      </CardContent>
-      <CardFooter className={cn(
-        "px-5 py-3",
-        isPrimary ? "bg-white bg-opacity-10" : "bg-gray-50"
-      )}>
-        <div className="text-sm">
-          <a 
-            href="#" 
+          <Badge 
+            variant={cardActive ? "default" : "destructive"} 
             className={cn(
-              "font-medium flex items-center",
-              isPrimary 
-                ? "text-white text-opacity-80 hover:text-opacity-100" 
-                : "text-primary-600 hover:text-primary-500"
+              "text-xs font-medium ml-auto",
+              cardActive ? "bg-green-500" : "bg-red-500"
             )}
           >
-            View {isPrimary ? "card" : "savings"} details
+            {cardActive ? (
+              <span className="flex items-center">
+                <CheckCircle2 className="h-3 w-3 mr-1" />
+                Active
+              </span>
+            ) : (
+              <span className="flex items-center">
+                <ShieldAlert className="h-3 w-3 mr-1" />
+                Blocked
+              </span>
+            )}
+          </Badge>
+        </div>
+        
+        <div className="mt-4">
+          <dl>
+            <dt className="text-sm font-medium truncate text-white text-opacity-70">
+              {isStudent ? "Student Meal Card" : "Staff Meal Card"}
+            </dt>
+            <dd>
+              <div className="text-2xl font-bold text-white">
+                {formattedBalance}
+              </div>
+            </dd>
+          </dl>
+        </div>
+
+        <div className="mt-4">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-medium text-white text-opacity-70">
+              Card ending in {cardNumber}
+            </span>
+            <span className="text-xs font-medium text-white text-opacity-70">
+              Exp: {expiryDate}
+            </span>
+          </div>
+        </div>
+
+        {lastUsedAt && (
+          <div className="mt-3 pt-3 border-t border-white border-opacity-20">
+            <div className="flex items-center text-sm">
+              <MapPin className="h-4 w-4 mr-1 text-white text-opacity-70" />
+              <span className="text-white text-opacity-90">
+                Last used at: <span className="font-semibold">{lastUsedAt}</span>
+              </span>
+            </div>
+          </div>
+        )}
+      </CardContent>
+      <CardFooter className="px-5 py-3 bg-white bg-opacity-10">
+        <div className="text-sm w-full flex justify-between">
+          <a 
+            href="#" 
+            className="font-medium flex items-center text-white text-opacity-80 hover:text-opacity-100"
+          >
+            View card details
             <ArrowRight className="ml-1 h-4 w-4" />
+          </a>
+          <a 
+            href="#" 
+            className="font-medium flex items-center text-white text-opacity-80 hover:text-opacity-100"
+          >
+            {cardActive ? "Block card" : "Unblock card"}
+            <ShieldAlert className="ml-1 h-4 w-4" />
           </a>
         </div>
       </CardFooter>

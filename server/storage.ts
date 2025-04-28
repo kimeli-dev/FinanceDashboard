@@ -66,36 +66,42 @@ export class MemStorage implements IStorage {
     };
     this.users.set(demoUser.id, demoUser);
     
-    // Create cards
-    const primaryCard: Card = {
+    // Create cafeteria card
+    const studentCard: Card = {
       id: this.cardId++,
       userId: demoUser.id,
-      type: "primary",
-      balance: 4578.23,
+      type: "student",
+      balance: 3500.00, // KES
       cardNumber: "4582",
       expiryDate: "03/25",
-      growth: null
+      lastUsedAt: "Sironi", // Last used at Sironi cafeteria
+      isActive: "true",
+      qrCode: "https://example.com/qr/4582",
+      nfcId: "NFC12345678"
     };
     
-    const savingsCard: Card = {
+    const staffCard: Card = {
       id: this.cardId++,
       userId: demoUser.id,
-      type: "savings",
-      balance: 12843.00,
+      type: "staff",
+      balance: 5000.00, // KES
       cardNumber: "7391",
       expiryDate: "05/26",
-      growth: 3.2
+      lastUsedAt: "Paul's Cafe", // Last used at Paul's Cafe
+      isActive: "true",
+      qrCode: "https://example.com/qr/7391",
+      nfcId: "NFC87654321"
     };
     
-    this.cards.set(primaryCard.id, primaryCard);
-    this.cards.set(savingsCard.id, savingsCard);
+    this.cards.set(studentCard.id, studentCard);
+    this.cards.set(staffCard.id, staffCard);
     
     // Create budget
     const budget: Budget = {
       id: this.budgetId++,
       userId: demoUser.id,
-      spent: 2354.75,
-      total: 3500.00
+      spent: 1500.00, // KES
+      total: 5000.00  // KES
     };
     
     this.budgets.set(budget.id, budget);
@@ -104,43 +110,43 @@ export class MemStorage implements IStorage {
     const transactions: InsertTransaction[] = [
       {
         userId: demoUser.id,
-        amount: -84.99,
-        merchant: "Amazon.com",
-        category: "Shopping",
+        amount: -350.00,
+        cafeteria: "Sironi",
+        mealType: "Lunch",
         date: new Date(),
-        iconType: "shopping"
-      },
-      {
-        userId: demoUser.id,
-        amount: 3250.00,
-        merchant: "Salary Deposit",
-        category: "Income",
-        date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
-        iconType: "income"
-      },
-      {
-        userId: demoUser.id,
-        amount: -1250.00,
-        merchant: "Apartment Rent",
-        category: "Housing",
-        date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
-        iconType: "housing"
-      },
-      {
-        userId: demoUser.id,
-        amount: -5.45,
-        merchant: "Starbucks",
-        category: "Food & Dining",
-        date: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000), // 6 days ago
         iconType: "food"
       },
       {
         userId: demoUser.id,
-        amount: -13.99,
-        merchant: "Netflix",
-        category: "Entertainment",
-        date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 7 days ago
-        iconType: "entertainment"
+        amount: -250.00,
+        cafeteria: "Paul's Cafe",
+        mealType: "Breakfast",
+        date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
+        iconType: "food"
+      },
+      {
+        userId: demoUser.id,
+        amount: -400.00,
+        cafeteria: "Sironi",
+        mealType: "Dinner",
+        date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
+        iconType: "food"
+      },
+      {
+        userId: demoUser.id,
+        amount: -150.00,
+        cafeteria: "University Kiosk",
+        mealType: "Snack",
+        date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
+        iconType: "food"
+      },
+      {
+        userId: demoUser.id,
+        amount: -350.00,
+        cafeteria: "Sironi",
+        mealType: "Lunch",
+        date: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000), // 4 days ago
+        iconType: "food"
       }
     ];
     

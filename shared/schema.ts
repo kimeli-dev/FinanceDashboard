@@ -14,11 +14,14 @@ export const users = pgTable("users", {
 export const cards = pgTable("cards", {
   id: serial("id").primaryKey(),
   userId: serial("user_id").references(() => users.id),
-  type: text("type").notNull(), // "primary" or "savings"
+  type: text("type").notNull(), // "student" or "staff"
   balance: numeric("balance").notNull(),
   cardNumber: text("card_number").notNull(),
   expiryDate: text("expiry_date").notNull(),
-  growth: numeric("growth"), // For savings accounts
+  lastUsedAt: text("last_used_at"), // Name of the cafeteria where card was last used
+  isActive: text("is_active").default("true").notNull(), // To track whether card is active or suspended
+  qrCode: text("qr_code"), // QR code information
+  nfcId: text("nfc_id"), // NFC ID information
 });
 
 export const budgets = pgTable("budgets", {
@@ -32,8 +35,8 @@ export const transactions = pgTable("transactions", {
   id: serial("id").primaryKey(),
   userId: serial("user_id").references(() => users.id),
   amount: numeric("amount").notNull(),
-  merchant: text("merchant").notNull(),
-  category: text("category").notNull(),
+  cafeteria: text("cafeteria").notNull(), // Name of cafeteria (Sironi, Paul's Cafe, etc.)
+  mealType: text("meal_type").notNull(), // Type of meal (Breakfast, Lunch, Dinner, Snack)
   date: timestamp("date").notNull(),
   iconType: varchar("icon_type", { length: 20 }).notNull(), // Type of icon to display
 });
@@ -60,7 +63,10 @@ export const insertCardSchema = createInsertSchema(cards).pick({
   balance: true,
   cardNumber: true,
   expiryDate: true,
-  growth: true,
+  lastUsedAt: true,
+  isActive: true,
+  qrCode: true,
+  nfcId: true,
 });
 
 export const insertBudgetSchema = createInsertSchema(budgets).pick({
@@ -72,8 +78,8 @@ export const insertBudgetSchema = createInsertSchema(budgets).pick({
 export const insertTransactionSchema = createInsertSchema(transactions).pick({
   userId: true,
   amount: true,
-  merchant: true,
-  category: true,
+  cafeteria: true,
+  mealType: true,
   date: true,
   iconType: true,
 });

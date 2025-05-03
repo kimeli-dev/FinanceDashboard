@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { CreditCard, CreditCardIcon, ShieldAlert, CheckCircle2, ArrowRight, MapPin, Lock, Unlock } from "lucide-react";
+import { Lock, Unlock } from "lucide-react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
@@ -57,7 +57,7 @@ export default function BalanceCard({ type, balance, cardNumber, expiryDate, las
               "flex-shrink-0 rounded-md p-3",
               "bg-white bg-opacity-30"
             )}>
-              <CreditCardIcon className="h-8 w-8 text-white" />
+              {/* Credit card icon would go here */}
             </div>
             <Badge 
               variant={cardActive ? "default" : "destructive"} 
@@ -66,17 +66,7 @@ export default function BalanceCard({ type, balance, cardNumber, expiryDate, las
                 cardActive ? "bg-green-500" : "bg-red-500"
               )}
             >
-              {cardActive ? (
-                <span className="flex items-center">
-                  <CheckCircle2 className="h-3 w-3 mr-1" />
-                  Active
-                </span>
-              ) : (
-                <span className="flex items-center">
-                  <ShieldAlert className="h-3 w-3 mr-1" />
-                  Blocked
-                </span>
-              )}
+              {cardActive ? "Active" : "Blocked"}
             </Badge>
           </div>
           
@@ -96,7 +86,7 @@ export default function BalanceCard({ type, balance, cardNumber, expiryDate, las
           <div className="mt-4">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-white text-opacity-70">
-                Card ending in {cardNumber}
+                Card ending in {cardNumber.slice(-4)}
               </span>
               <span className="text-xs font-medium text-white text-opacity-70">
                 Exp: {expiryDate}
@@ -107,7 +97,6 @@ export default function BalanceCard({ type, balance, cardNumber, expiryDate, las
           {lastUsedAt && (
             <div className="mt-3 pt-3 border-t border-white border-opacity-20">
               <div className="flex items-center text-sm">
-                <MapPin className="h-4 w-4 mr-1 text-white text-opacity-70" />
                 <span className="text-white text-opacity-90">
                   Last used at: <span className="font-semibold">{lastUsedAt}</span>
                 </span>
@@ -121,79 +110,28 @@ export default function BalanceCard({ type, balance, cardNumber, expiryDate, las
               variant="ghost" 
               className="text-white text-opacity-80 hover:text-opacity-100 hover:bg-white hover:bg-opacity-10 p-0"
             >
-              <span className="flex items-center">
-                View card details
-                <ArrowRight className="ml-1 h-4 w-4" />
-              </span>
+              View card details
             </Button>
             
             {cardActive ? (
               <Button 
-                variant="ghost" 
-                className="text-white text-opacity-80 hover:text-opacity-100 hover:bg-white hover:bg-opacity-10 p-0"
+                variant="destructive"
                 onClick={() => setIsBlockDialogOpen(true)}
               >
-                <span className="flex items-center">
-                  Block card
-                  <Lock className="ml-1 h-4 w-4" />
-                </span>
+                Block card
               </Button>
             ) : (
               <Button 
-                variant="ghost" 
-                className="text-white text-opacity-80 hover:text-opacity-100 hover:bg-white hover:bg-opacity-10 p-0"
+                variant="default"
                 onClick={() => setIsUnblockDialogOpen(true)}
               >
-                <span className="flex items-center">
-                  Unblock card
-                  <Unlock className="ml-1 h-4 w-4" />
-                </span>
+                Unblock card
               </Button>
             )}
           </div>
         </CardFooter>
       </Card>
 
-      {/* Block Card Dialog */}
-      <Dialog open={isBlockDialogOpen} onOpenChange={setIsBlockDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle className="flex items-center text-red-600">
-              <Lock className="h-5 w-5 mr-2" />
-              Block Card
-            </DialogTitle>
-            <DialogDescription>
-              Please confirm your password to block your cafeteria card. This will prevent any unauthorized use if your card is lost or stolen.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="py-4">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input 
-                  id="password" 
-                  type="password" 
-                  placeholder="Enter your password" 
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsBlockDialogOpen(false)}>Cancel</Button>
-            <Button 
-              variant="destructive" 
-              onClick={handleBlockCard}
-              disabled={!password}
-            >
-              Block Card
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Unblock Card Dialog */}
       <Dialog open={isUnblockDialogOpen} onOpenChange={setIsUnblockDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
@@ -202,7 +140,7 @@ export default function BalanceCard({ type, balance, cardNumber, expiryDate, las
               Unblock Card
             </DialogTitle>
             <DialogDescription>
-              Please confirm your password to unblock your cafeteria card. This will reactivate your card for payments.
+              Please confirm your password to unblock your cafeteria card.
             </DialogDescription>
           </DialogHeader>
           <div className="py-4">
@@ -214,16 +152,17 @@ export default function BalanceCard({ type, balance, cardNumber, expiryDate, las
                   type="password" 
                   placeholder="Enter your password" 
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                 />
               </div>
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsUnblockDialogOpen(false)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setIsUnblockDialogOpen(false)}>
+              Cancel
+            </Button>
             <Button 
               variant="default" 
-              className="bg-green-600 hover:bg-green-700"
               onClick={handleUnblockCard}
               disabled={!password}
             >

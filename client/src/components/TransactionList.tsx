@@ -69,7 +69,7 @@ export default function TransactionList({ transactions, isLoading }: Transaction
   };
 
   const filteredTransactions = transactions.filter(transaction => {
-    const matchesSearch = transaction.cafeteria.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const matchesSearch = transaction.cafeteria?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          transaction.mealType?.toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesMealType = filter === "all" || transaction.mealType?.toLowerCase() === filter;
@@ -121,9 +121,9 @@ export default function TransactionList({ transactions, isLoading }: Transaction
               className="w-full sm:w-32 bg-white/50 border border-gray-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="all">All Amounts</option>
-              <option value="low">< KES 50</option>
+              <option value="low">&lt; KES 50</option>
               <option value="medium">KES 50-100</option>
-              <option value="high">> KES 100</option>
+              <option value="high">&gt; KES 100</option>
             </select>
           </div>
         </div>

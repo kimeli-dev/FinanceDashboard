@@ -60,7 +60,7 @@ export default function BalanceCard({ type, balance, cardNumber, expiryDate, las
         "before:absolute before:inset-0 before:bg-white/10 before:backdrop-blur-sm",
         "after:absolute after:inset-0 after:bg-gradient-to-t after:from-black/20 after:to-transparent"
       )}>
-        <CardContent className="relative z-10 p-8">
+        <CardContent className="relative z-10 p-6">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-3">
               <div className="p-3 rounded-xl bg-white/20 backdrop-blur-sm">
@@ -85,7 +85,7 @@ export default function BalanceCard({ type, balance, cardNumber, expiryDate, las
             </div>
           </div>
           
-          <div className="mb-8">
+          <div className="mb-6">
             <div className="flex items-center justify-between mb-2">
               <p className="text-white/70 text-sm">Available Balance</p>
               <button
@@ -99,20 +99,14 @@ export default function BalanceCard({ type, balance, cardNumber, expiryDate, las
                 )}
               </button>
             </div>
-            <p className="text-4xl font-bold text-white tracking-tight">
+            <p className="text-3xl font-black text-white tracking-tight" style={{ fontWeight: 900 }}>
               {balanceVisible ? formattedBalance : "••••••"}
             </p>
           </div>
 
-          <div className="flex items-center justify-between text-white/80 text-sm">
-            <div>
-              <p className="text-xs text-white/60">Card Number</p>
-              <p className="font-mono">•••• •••• •••• {cardNumber.slice(-4)}</p>
-            </div>
-            <div className="text-right">
-              <p className="text-xs text-white/60">Expires</p>
-              <p className="font-mono">{expiryDate}</p>
-            </div>
+          <div className="text-right">
+            <p className="text-xs text-white/60">Expires</p>
+            <p className="font-mono text-white/80">{expiryDate}</p>
           </div>
 
           {lastUsedAt && (
@@ -125,15 +119,8 @@ export default function BalanceCard({ type, balance, cardNumber, expiryDate, las
           )}
         </CardContent>
         
-        <CardFooter className="relative z-10 px-8 py-4 bg-black/20 backdrop-blur-sm">
-          <div className="flex justify-between items-center w-full">
-            <Button 
-              variant="ghost" 
-              className="text-white/80 hover:text-white hover:bg-white/10 p-0 h-auto"
-            >
-              View Details
-            </Button>
-            
+        <CardFooter className="relative z-10 px-6 py-3 bg-black/20 backdrop-blur-sm">
+          <div className="flex justify-end items-center w-full">
             {cardActive ? (
               <Button 
                 variant="destructive"

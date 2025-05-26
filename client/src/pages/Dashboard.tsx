@@ -5,6 +5,7 @@ import TransactionList from "@/components/TransactionList";
 import SimpleChart from "@/components/SimpleChart";
 import { Card as CardType, Transaction } from "@/lib/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function Dashboard() {
   const { data: cards, isLoading: cardsLoading } = useQuery<CardType[]>({
@@ -16,6 +17,15 @@ export default function Dashboard() {
     queryKey: ['/api/transactions'],
     queryFn: () => fetch('/api/transactions').then(res => res.json()),
   });
+
+  const { user } = useAuth();
+
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good morning';
+    if (hour < 17) return 'Good afternoon';
+    return 'Good evening';
+  };
 
   const studentCard = cards?.find(card => card.type === "student");
   
@@ -29,8 +39,8 @@ export default function Dashboard() {
       <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white">Dashboard</h1>
-          <p className="text-gray-400 mt-2">Welcome back! Here's your financial overview</p>
+          <h1 className="text-3xl font-bold text-blue-400">{getGreeting()}, {user?.name || 'User'}!</h1>
+          <p className="text-gray-400 mt-2">Here's your meal card overview</p>
         </div>
 
         {cardsLoading ? (
@@ -41,7 +51,7 @@ export default function Dashboard() {
           <div className="space-y-8">
             {/* Balance Card */}
             {studentCard && (
-              <div className="max-w-2xl">
+              <div className="max-w-lg">
                 <BalanceCard 
                   type="student"
                   balance={studentCard.balance.toString()}

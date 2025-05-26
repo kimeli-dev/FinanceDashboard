@@ -9,10 +9,10 @@ import Dashboard from "@/pages/Dashboard";
 import Documentation from "@/pages/Documentation";
 import AuthPage from "@/pages/AuthPage";
 import { useState } from "react";
-import { ThemeProvider, useTheme } from "next-themes";
+import { ThemeProvider } from "next-themes";
 import { AuthProvider, useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
-import { SunIcon, MoonIcon, LogOut, Menu, X, MessageSquare } from "lucide-react";
+import { LogOut, Menu, X, MessageSquare } from "lucide-react";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -20,21 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-// Theme toggle button
-function ThemeToggle() {
-  const { setTheme, theme } = useTheme();
 
-  return (
-    <Button
-      variant="ghost"
-      size="icon"
-      className="text-gray-400 hover:text-white"
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-    >
-      {theme === "dark" ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}
-    </Button>
-  );
-}
 
 // Feedback form component
 function FeedbackDialog() {
@@ -120,7 +106,7 @@ function MobileMenu() {
       {isOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
           <div className="fixed inset-0 bg-black/50" onClick={() => setIsOpen(false)} />
-          <div className="fixed right-0 top-0 h-full w-64 bg-gray-800 p-4">
+          <div className="fixed left-0 top-0 h-full w-64 bg-gray-800 p-4"></div>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-semibold text-white">Menu</h2>
               <Button
@@ -143,11 +129,6 @@ function MobileMenu() {
             )}
 
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-gray-300">Theme</span>
-                <ThemeToggle />
-              </div>
-              
               <div className="flex items-center justify-between">
                 <span className="text-gray-300">Feedback</span>
                 <FeedbackDialog />
@@ -181,7 +162,6 @@ function UserMenu() {
   return (
     <div className="hidden md:flex items-center gap-2">
       <span className="text-sm text-gray-300">{user.name}</span>
-      <ThemeToggle />
       <FeedbackDialog />
       <Button
         variant="ghost"
@@ -209,11 +189,11 @@ function Router() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-16">
               <div className="flex items-center">
-                <h1 className="text-xl font-bold text-white">FinancePortal</h1>
+                <h1 className="text-xl font-bold text-white font-mono tracking-wide">MealCard Info</h1>
               </div>
               <div className="flex items-center space-x-2">
-                <UserMenu />
                 <MobileMenu />
+                <UserMenu />
               </div>
             </div>
           </div>

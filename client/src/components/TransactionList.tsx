@@ -16,12 +16,10 @@ export default function TransactionList({ transactions, isLoading }: Transaction
         return <Coffee className="h-4 w-4" />;
       case 'lunch':
         return <Utensils className="h-4 w-4" />;
-      case 'dinner':
+      case 'supper':
         return <UtensilsCrossed className="h-4 w-4" />;
-      case 'snack':
-        return <Pizza className="h-4 w-4" />;
       default:
-        return <ShoppingBag className="h-4 w-4" />;
+        return <Utensils className="h-4 w-4" />;
     }
   };
 
@@ -46,10 +44,8 @@ export default function TransactionList({ transactions, isLoading }: Transaction
       return 'Breakfast time';
     } else if (mealType?.toLowerCase() === 'lunch' || (hour >= 11 && hour < 16)) {
       return 'Lunch time';
-    } else if (mealType?.toLowerCase() === 'dinner' || (hour >= 16 && hour < 22)) {
-      return 'Dinner time';
-    } else if (mealType?.toLowerCase() === 'snack') {
-      return 'Snack time';
+    } else if (mealType?.toLowerCase() === 'supper' || (hour >= 16 && hour < 22)) {
+      return 'Supper time';
     }
     return 'Meal time';
   };

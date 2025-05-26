@@ -11,14 +11,13 @@ import { useState, useEffect } from "react";
 import Sidebar from "@/components/Sidebar";
 import { ThemeProvider, useTheme } from 'next-themes';
 import { AuthProvider, useAuth } from "@/hooks/use-auth";
-import ProtectedRoute from "@/components/ProtectedRoute";
 import { Button } from "@/components/ui/button";
 import { SunIcon, MoonIcon, LogOut } from "lucide-react";
 
 // Theme toggle component
 function ThemeToggle() {
   const { setTheme, theme } = useTheme();
-  
+
   return (
     <Button
       variant="ghost"
@@ -34,9 +33,9 @@ function ThemeToggle() {
 // User menu with logout
 function UserMenu() {
   const { user, logoutMutation } = useAuth();
-  
+
   if (!user) return null;
-  
+
   return (
     <div className="flex items-center gap-2">
       <span className="text-sm hidden md:inline">{user.name}</span>
@@ -63,7 +62,7 @@ function Router() {
       {showSidebar && (
         <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />
       )}
-      
+
       <div className="flex flex-1 flex-col overflow-hidden">
         {showSidebar && user && (
           <header className="bg-white dark:bg-gray-800 shadow-sm z-10">
@@ -93,7 +92,7 @@ function Router() {
             </div>
           </header>
         )}
-        
+
         <main className={`flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900 p-4 sm:p-6 lg:p-8 ${!showSidebar ? 'w-full' : ''}`}>
           <Switch>
             <Route path="/auth" component={AuthPage} />
@@ -115,19 +114,15 @@ function Router() {
   );
 }
 
-function App() {
+export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider attribute="class">
-        <AuthProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Router />
-          </TooltipProvider>
-        </AuthProvider>
+      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+        <TooltipProvider>
+          <Toaster />
+          <Router />
+        </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );
 }
-
-export default App;

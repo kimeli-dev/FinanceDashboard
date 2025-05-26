@@ -1,14 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 import { Guide } from "@/lib/types";
 import { 
-  Utensils, Shield, Clock, HelpCircle, ArrowRight, 
-  QrCode, BookOpen, Wallet, MapPin 
+  Book, 
+  Shield, 
+  Lightbulb,
+  CreditCard,
+  Phone
 } from "lucide-react";
-import { Card, CardHeader, CardContent, CardTitle, CardDescription } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export default function DocumentationList() {
+interface DocumentationListProps {
+  limit?: number;
+}
+
+export default function DocumentationList({ limit }: DocumentationListProps) {
   const { data: guides, isLoading } = useQuery<Guide[]>({
     queryKey: ['/api/guides']
   });
@@ -16,99 +21,69 @@ export default function DocumentationList() {
   const getIcon = (iconName: string) => {
     switch (iconName) {
       case 'book':
-        return <BookOpen className="h-6 w-6 text-emerald-500" />;
+        return <Book className="h-4 w-4 text-blue-400" />;
       case 'shield':
-        return <Shield className="h-6 w-6 text-red-500" />;
-      case 'calendar':
-        return <Clock className="h-6 w-6 text-blue-500" />;
+        return <Shield className="h-4 w-4 text-green-400" />;
       case 'lightbulb':
-        return <HelpCircle className="h-6 w-6 text-amber-500" />;
+        return <Lightbulb className="h-4 w-4 text-yellow-400" />;
       default:
-        return <Utensils className="h-6 w-6 text-emerald-500" />;
+        return <Book className="h-4 w-4 text-blue-400" />;
     }
   };
 
-  // Modify guide titles and descriptions to match cafeteria context
-  const cafeteriaGuides = guides?.map(guide => {
-    let title = guide.title;
-    let description = guide.description;
-    
-    if (guide.title === "How to track your spending") {
-      title = "Cafeteria Locations & Hours";
-      description = "Find all on-campus cafeterias, their opening hours and menu specialties.";
-    } else if (guide.title === "Security best practices") {
-      title = "Lost or Stolen Card?";
-      description = "Learn how to block your card immediately and request a replacement.";
-    } else if (guide.title === "Setting up recurring payments") {
-      title = "Meal Plan Options";
-      description = "Explore different meal plan packages and subscription options.";
-    } else if (guide.title === "Getting financial insights") {
-      title = "Cafeteria Menu Guide";
-      description = "Browse weekly meal schedules and nutritional information.";
+  const quickInfo = [
+    {
+      icon: <CreditCard className="h-4 w-4 text-blue-400" />,
+      title: "Card Management",
+      description: "Block/unblock cards, view transaction history"
+    },
+    {
+      icon: <Phone className="h-4 w-4 text-green-400" />,
+      title: "Support",
+      description: "Contact support for card issues or balance inquiries"
     }
-    
-    return {
-      ...guide,
-      title,
-      description
-    };
-  });
+  ];
 
   return (
-    <Card className="bg-white shadow overflow-hidden sm:rounded-lg">
-      <CardHeader className="px-4 py-5 sm:px-6 bg-gradient-to-r from-green-50 to-emerald-50">
-        <CardTitle className="text-lg flex items-center">
-          <Utensils className="h-5 w-5 mr-2 text-emerald-600" />
-          Cafeteria Guide
-        </CardTitle>
-        <CardDescription>Helpful information about campus dining services.</CardDescription>
+    <Card className="bg-gray-800 border-gray-700">
+      <CardHeader className="pb-4">
+        <CardTitle className="text-lg font-medium text-white">Quick Information</CardTitle>
       </CardHeader>
-      <CardContent className="border-t border-gray-200 px-4 py-5 sm:p-6">
-        {isLoading ? (
-          <div className="space-y-4">
-            {Array(4).fill(0).map((_, index) => (
-              <div key={index} className="flex items-center">
-                <Skeleton className="h-10 w-10 rounded mr-3" />
-                <div>
-                  <Skeleton className="h-4 w-40 mb-2" />
-                  <Skeleton className="h-3 w-60" />
-                </div>
+      <CardContent>
+        <div className="space-y-3">
+          {quickInfo.map((info, index) => (
+            <div key={index} className="flex items-start space-x-3 p-3 rounded-lg bg-gray-700/50">
+              <div className="flex-shrink-0 mt-0.5">
+                {info.icon}
               </div>
-            ))}
+              <div>
+                <h4 className="font-medium text-white text-sm">{info.title}</h4>
+                <p className="text-xs text-gray-400 mt-1">{info.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {isLoading ? (
+          <div className="flex items-center justify-center h-16 mt-4">
+            <div className="animate-spin h-6 w-6 border-2 border-blue-500 border-opacity-50 rounded-full border-t-transparent"></div>
           </div>
         ) : (
-          <ul className="space-y-4">
-            {cafeteriaGuides?.map((guide) => (
-              <li key={guide.id}>
-                <a href="#" className="block hover:bg-gray-50 p-2 -m-2 rounded-md transition duration-150 ease-in-out">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      {getIcon(guide.iconName)}
-                    </div>
-                    <div className="ml-3">
-                      <div className="flex items-center">
-                        <h4 className="text-base font-medium text-gray-900">{guide.title}</h4>
-                        {guide.title === "Lost or Stolen Card?" && (
-                          <Badge variant="outline" className="ml-2 text-xs bg-red-50 text-red-700 border-red-200">
-                            Important
-                          </Badge>
-                        )}
-                      </div>
-                      <p className="mt-1 text-sm text-gray-500">{guide.description}</p>
-                    </div>
+          guides && guides.length > 0 && (
+            <div className="space-y-2 mt-4">
+              <h5 className="font-medium text-gray-300 text-sm">Helpful Guides</h5>
+              {(limit ? guides.slice(0, 2) : guides.slice(0, 2)).map((guide) => (
+                <div key={guide.id} className="flex items-center space-x-3 p-2 hover:bg-gray-700/50 rounded-md transition-colors">
+                  {getIcon(guide.iconName)}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-white truncate">{guide.title}</p>
+                    <p className="text-xs text-gray-400 truncate">{guide.description}</p>
                   </div>
-                </a>
-              </li>
-            ))}
-          </ul>
+                </div>
+              ))}
+            </div>
+          )
         )}
-        
-        <div className="mt-6 border-t border-gray-100 pt-4">
-          <a href="/documentation" className="text-sm font-medium text-emerald-600 hover:text-emerald-700 flex items-center">
-            View complete cafeteria guide
-            <ArrowRight className="ml-1 h-4 w-4" />
-          </a>
-        </div>
       </CardContent>
     </Card>
   );

@@ -24,8 +24,6 @@ export default function Sidebar({ open, setOpen }: SidebarProps) {
 
   const navItems = [
     { name: "Dashboard", href: "/", icon: Home },
-    { name: "Cards", href: "/cards", icon: CreditCard },
-    { name: "Transactions", href: "/transactions", icon: FileText },
     { name: "Settings", href: "/settings", icon: Settings },
   ];
 
@@ -42,15 +40,15 @@ export default function Sidebar({ open, setOpen }: SidebarProps) {
       {/* Sidebar for mobile */}
       <div
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-64 bg-white transform transition-transform duration-300 ease-in-out lg:hidden",
+          "fixed inset-y-0 left-0 z-50 w-64 bg-gray-800 transform transition-transform duration-300 ease-in-out lg:hidden",
           open ? "translate-x-0" : "-translate-x-full"
         )}
       >
         <div className="h-full flex flex-col">
-          <div className="flex items-center justify-between h-16 border-b border-gray-200 px-4">
-            <h1 className="text-xl font-bold text-primary">FinancePortal</h1>
+          <div className="flex items-center justify-between h-16 border-b border-gray-700 px-4">
+            <h1 className="text-xl font-bold text-white">FinancePortal</h1>
             <button
-              className="p-1 text-gray-400 hover:text-gray-500 focus:outline-none"
+              className="p-1 text-gray-300 hover:text-white focus:outline-none"
               onClick={() => setOpen(false)}
             >
               <X className="h-6 w-6" />
@@ -107,9 +105,9 @@ export default function Sidebar({ open, setOpen }: SidebarProps) {
       {/* Sidebar for desktop */}
       <div className="hidden lg:flex lg:flex-shrink-0">
         <div className="flex flex-col w-64">
-          <div className="flex flex-col h-0 flex-1 border-r border-gray-200 bg-white">
-            <div className="flex items-center justify-center h-16 border-b border-gray-200">
-              <h1 className="text-xl font-bold text-primary">FinancePortal</h1>
+          <div className="flex flex-col h-0 flex-1 border-r border-gray-700 bg-gray-800">
+            <div className="flex items-center justify-center h-16 border-b border-gray-700">
+              <h1 className="text-xl font-bold text-white">FinancePortal</h1>
             </div>
             <div className="flex-1 flex flex-col overflow-y-auto">
               <nav className="flex-1 px-2 py-4 space-y-1">
@@ -119,8 +117,8 @@ export default function Sidebar({ open, setOpen }: SidebarProps) {
                       className={cn(
                         "group flex items-center px-2 py-2 text-sm font-medium rounded-md",
                         location === item.href
-                          ? "bg-primary-50 text-primary"
-                          : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                          ? "bg-blue-600 text-white"
+                          : "text-gray-300 hover:bg-gray-700 hover:text-white"
                       )}
                     >
                       <item.icon
@@ -138,7 +136,7 @@ export default function Sidebar({ open, setOpen }: SidebarProps) {
               </nav>
             </div>
             {user && (
-              <div className="border-t border-gray-200 p-4">
+              <div className="border-t border-gray-700 p-4">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
                     <img
@@ -148,8 +146,8 @@ export default function Sidebar({ open, setOpen }: SidebarProps) {
                     />
                   </div>
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-gray-700">{user.name}</p>
-                    <p className="text-xs font-medium text-gray-500">{user.email}</p>
+                    <p className="text-sm font-medium text-white">{user.name}</p>
+                    <p className="text-xs font-medium text-gray-300">{user.email}</p>
                   </div>
                 </div>
               </div>

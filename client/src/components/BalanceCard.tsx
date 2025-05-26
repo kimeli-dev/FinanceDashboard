@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Lock, Unlock, CreditCard } from "lucide-react";
+import { Lock, Unlock, CreditCard, Eye, EyeOff } from "lucide-react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -23,6 +23,7 @@ export default function BalanceCard({ type, balance, cardNumber, expiryDate, las
   const [isBlockDialogOpen, setIsBlockDialogOpen] = useState(false);
   const [isUnblockDialogOpen, setIsUnblockDialogOpen] = useState(false);
   const [password, setPassword] = useState("");
+  const [balanceVisible, setBalanceVisible] = useState(true);
 
   const isStudent = type === "student";
   const cardActive = cardStatus === "true";
@@ -81,9 +82,21 @@ export default function BalanceCard({ type, balance, cardNumber, expiryDate, las
           </div>
           
           <div className="mb-8">
-            <p className="text-white/70 text-sm mb-2">Available Balance</p>
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-white/70 text-sm">Available Balance</p>
+              <button
+                onClick={() => setBalanceVisible(!balanceVisible)}
+                className="p-1 rounded-full hover:bg-white/10 transition-colors"
+              >
+                {balanceVisible ? (
+                  <EyeOff className="h-4 w-4 text-white/70" />
+                ) : (
+                  <Eye className="h-4 w-4 text-white/70" />
+                )}
+              </button>
+            </div>
             <p className="text-4xl font-bold text-white tracking-tight">
-              {formattedBalance}
+              {balanceVisible ? formattedBalance : "••••••"}
             </p>
           </div>
 

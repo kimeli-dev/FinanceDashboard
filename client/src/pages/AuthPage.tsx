@@ -51,12 +51,12 @@ export default function AuthPage() {
   return (
     <div className="min-h-screen flex flex-col md:flex-row overflow-hidden">
       {/* Left Column - Auth Form */}
-      <div className="w-full md:w-1/2 flex items-center justify-center p-4 md:p-8 bg-white dark:bg-gray-900">
-        <Card className="w-full max-w-md shadow-lg dark:border-gray-700">
+      <div className="w-full md:w-1/2 flex items-center justify-center p-4 md:p-8 bg-gray-900">
+        <Card className="w-full max-w-md shadow-lg border-gray-700 bg-gray-800">
           <CardHeader className="space-y-1">
             <div className="flex items-center gap-2 mb-2">
               <CreditCard className="h-6 w-6 text-primary-600" />
-              <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white">Smart Cafeteria Card</CardTitle>
+              <CardTitle className="text-2xl font-bold text-white">Smart Cafeteria Card</CardTitle>
             </div>
             <CardDescription>
               Enter your credentials to access your cafeteria card dashboard
@@ -209,13 +209,13 @@ export default function AuthPage() {
       </div>
       
       {/* Right Column - Hero */}
-      <div className="w-full md:w-1/2 bg-gradient-to-r from-primary-600 to-primary-800 text-white p-8 hidden md:flex flex-col justify-center">
+      <div className="w-full md:w-1/2 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white p-8 hidden md:flex flex-col justify-center">
         <div className="max-w-md mx-auto">
           <h1 className="text-4xl font-bold mb-6">
             Smart Cafeteria Card System
           </h1>
           <p className="text-lg mb-8">
-            Manage your campus dining experience with our digital cafeteria card system. Track your balance, view transactions, and top up your account all in one place.
+            Manage your campus dining experience with our digital cafeteria card system. Track your balance, view transactions, and manage your account all in one place.
           </p>
           <div className="space-y-4">
             <div className="flex items-start">
@@ -224,7 +224,7 @@ export default function AuthPage() {
               </div>
               <div>
                 <h3 className="font-semibold">Digital Card Management</h3>
-                <p className="text-white text-opacity-80">View balance in KES, check transaction history and block lost cards</p>
+                <p className="text-white text-opacity-80">View balance in KES, check transaction history and manage your card security</p>
               </div>
             </div>
             <div className="flex items-start">
@@ -232,8 +232,8 @@ export default function AuthPage() {
                 <ChevronsRight className="h-6 w-6" />
               </div>
               <div>
-                <h3 className="font-semibold">Easy Cafeteria Payments</h3>
-                <p className="text-white text-opacity-80">Quick NFC and QR payments at Sironi, Paul's Cafe, and other campus locations</p>
+                <h3 className="font-semibold">Seamless Campus Dining</h3>
+                <p className="text-white text-opacity-80">Quick payments at all campus cafeterias and dining locations</p>
               </div>
             </div>
           </div>

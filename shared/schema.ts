@@ -20,8 +20,6 @@ export const cards = pgTable("cards", {
   expiryDate: text("expiry_date").notNull(),
   lastUsedAt: text("last_used_at"), // Name of the cafeteria where card was last used
   isActive: text("is_active").default("true").notNull(), // To track whether card is active or suspended
-  qrCode: text("qr_code"), // QR code information
-  nfcId: text("nfc_id"), // NFC ID information
 });
 
 export const budgets = pgTable("budgets", {

@@ -4,7 +4,7 @@ import BudgetCard from "@/components/BudgetCard";
 import TransactionList from "@/components/TransactionList";
 import DocumentationList from "@/components/DocumentationList";
 import { Card, Budget, Transaction } from "@/lib/types";
-import { IoCardOutline, IoQrCodeOutline, IoWifiOutline } from "react-icons/io5";
+
 import { Button } from "@/components/ui/button";
 
 export default function Dashboard() {
@@ -30,24 +30,7 @@ export default function Dashboard() {
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Cafeteria Card Dashboard</h1>
           <p className="text-gray-500 dark:text-gray-400 mt-1">Manage your student meal card and view transaction history</p>
         </div>
-        <div className="mt-4 md:mt-0 flex space-x-2">
-          <Button 
-            variant="outline" 
-            className="border-primary-600 text-primary-600 hover:bg-primary-50 dark:border-primary-400 dark:text-primary-400 dark:hover:bg-gray-800" 
-            size="sm"
-          >
-            <IoQrCodeOutline className="mr-1 h-4 w-4" />
-            Show QR Code
-          </Button>
-          <Button 
-            variant="outline" 
-            className="border-primary-600 text-primary-600 hover:bg-primary-50 dark:border-primary-400 dark:text-primary-400 dark:hover:bg-gray-800" 
-            size="sm"
-          >
-            <IoWifiOutline className="mr-1 h-4 w-4" />
-            Activate NFC
-          </Button>
-        </div>
+        
       </div>
 
       {/* Cards Section */}

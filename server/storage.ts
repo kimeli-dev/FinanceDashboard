@@ -75,9 +75,7 @@ export class MemStorage implements IStorage {
       cardNumber: "4582",
       expiryDate: "03/25",
       lastUsedAt: "Sironi", // Last used at Sironi cafeteria
-      isActive: "true",
-      qrCode: "https://example.com/qr/4582",
-      nfcId: "NFC12345678"
+      isActive: "true"
     };
     
     const staffCard: Card = {
@@ -88,9 +86,7 @@ export class MemStorage implements IStorage {
       cardNumber: "7391",
       expiryDate: "05/26",
       lastUsedAt: "Paul's Cafe", // Last used at Paul's Cafe
-      isActive: "true",
-      qrCode: "https://example.com/qr/7391",
-      nfcId: "NFC87654321"
+      isActive: "true"
     };
     
     this.cards.set(studentCard.id, studentCard);

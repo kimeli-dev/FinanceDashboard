@@ -1,4 +1,3 @@
-// Common types used across the client application
 export interface User {
   id: number;
   username: string;
@@ -16,8 +15,6 @@ export interface Card {
   expiryDate: string;
   lastUsedAt: string | null; // Name of the cafeteria where card was last used
   isActive: string; // "true" or "false" - if card is active or suspended
-  qrCode: string | null; // QR code information
-  nfcId: string | null; // NFC ID information
 }
 
 export interface Budget {

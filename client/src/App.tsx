@@ -7,14 +7,16 @@ import NotFound from "@/pages/not-found";
 import Dashboard from "@/pages/Dashboard";
 import Documentation from "@/pages/Documentation";
 import AuthPage from "@/pages/AuthPage";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Sidebar from "@/components/Sidebar";
-import { ThemeProvider, useTheme } from 'next-themes';
+import { ThemeProvider, useTheme } from "next-themes";
 import { AuthProvider, useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { SunIcon, MoonIcon, LogOut } from "lucide-react";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
-// Theme toggle component
+
+// Theme toggle button
 function ThemeToggle() {
   const { setTheme, theme } = useTheme();
 
@@ -51,6 +53,7 @@ function UserMenu() {
   );
 }
 
+// Protected route layout and sidebar/header
 function Router() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [location] = useLocation();
@@ -68,21 +71,8 @@ function Router() {
           <header className="bg-white dark:bg-gray-800 shadow-sm z-10">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex justify-between h-16">
-                <div className="flex">
-                  <div className="flex-shrink-0 flex items-center">
-                    <h1 className="text-xl font-bold text-primary dark:text-primary-400 lg:hidden">Cafeteria</h1>
-                  </div>
-                </div>
-                <div className="flex items-center lg:hidden">
-                  <button
-                    onClick={() => setSidebarOpen(!sidebarOpen)}
-                    className="p-1 rounded-full text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-700"
-                  >
-                    <span className="sr-only">Open sidebar</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                  </button>
+                <div className="flex items-center">
+                  <h1 className="text-xl font-bold text-primary dark:text-primary-400 lg:hidden">Cafeteria</h1>
                 </div>
                 <div className="flex items-center space-x-2">
                   <ThemeToggle />
@@ -114,15 +104,18 @@ function Router() {
   );
 }
 
+// ✅ Wrap all providers in proper order
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
-        <TooltipProvider>
-          <Toaster />
-          <Router />
-        </TooltipProvider>
-      </ThemeProvider>
+      <AuthProvider>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+          <TooltipProvider>
+            <Toaster />
+            <Router />
+          </TooltipProvider>
+        </ThemeProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

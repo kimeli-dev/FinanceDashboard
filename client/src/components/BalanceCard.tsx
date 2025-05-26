@@ -1,5 +1,6 @@
+
 import { useState } from "react";
-import { Lock, Unlock } from "lucide-react";
+import { Lock, Unlock, CreditCard } from "lucide-react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -46,86 +47,93 @@ export default function BalanceCard({ type, balance, cardNumber, expiryDate, las
   return (
     <>
       <Card className={cn(
-        "overflow-hidden dark:border-gray-700",
+        "relative overflow-hidden border-0 shadow-xl",
+        "backdrop-blur-md bg-gradient-to-br",
         cardActive 
-          ? "bg-gradient-to-r from-primary-600 to-primary-700 text-white dark:from-primary-700 dark:to-primary-800" 
-          : "bg-gradient-to-r from-gray-600 to-gray-700 text-white dark:from-gray-700 dark:to-gray-800"
+          ? "from-blue-600/90 via-purple-600/90 to-indigo-700/90" 
+          : "from-gray-600/90 via-gray-700/90 to-gray-800/90",
+        "before:absolute before:inset-0 before:bg-white/10 before:backdrop-blur-sm",
+        "after:absolute after:inset-0 after:bg-gradient-to-t after:from-black/20 after:to-transparent"
       )}>
-        <CardContent className="p-5">
-          <div className="flex items-center justify-between">
-            <div className={cn(
-              "flex-shrink-0 rounded-md p-3",
-              "bg-white bg-opacity-30"
-            )}>
-              {/* Credit card icon would go here */}
+        <CardContent className="relative z-10 p-8">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-3">
+              <div className="p-3 rounded-xl bg-white/20 backdrop-blur-sm">
+                <CreditCard className="h-8 w-8 text-white" />
+              </div>
+              <div>
+                <p className="text-white/80 text-sm font-medium">
+                  {isStudent ? "Student Meal Card" : "Staff Meal Card"}
+                </p>
+                <Badge 
+                  variant={cardActive ? "default" : "destructive"} 
+                  className={cn(
+                    "text-xs font-medium mt-1",
+                    cardActive 
+                      ? "bg-green-500/80 hover:bg-green-500/90 backdrop-blur-sm" 
+                      : "bg-red-500/80 hover:bg-red-500/90 backdrop-blur-sm"
+                  )}
+                >
+                  {cardActive ? "Active" : "Blocked"}
+                </Badge>
+              </div>
             </div>
-            <Badge 
-              variant={cardActive ? "default" : "destructive"} 
-              className={cn(
-                "text-xs font-medium ml-auto",
-                cardActive ? "bg-green-500" : "bg-red-500"
-              )}
-            >
-              {cardActive ? "Active" : "Blocked"}
-            </Badge>
           </div>
           
-          <div className="mt-4">
-            <dl>
-              <dt className="text-sm font-medium truncate text-white text-opacity-70">
-                {isStudent ? "Student Meal Card" : "Staff Meal Card"}
-              </dt>
-              <dd>
-                <div className="text-2xl font-bold text-white">
-                  {formattedBalance}
-                </div>
-              </dd>
-            </dl>
+          <div className="mb-8">
+            <p className="text-white/70 text-sm mb-2">Available Balance</p>
+            <p className="text-4xl font-bold text-white tracking-tight">
+              {formattedBalance}
+            </p>
           </div>
 
-          <div className="mt-4">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-white text-opacity-70">
-                Card ending in {cardNumber.slice(-4)}
-              </span>
-              <span className="text-xs font-medium text-white text-opacity-70">
-                Exp: {expiryDate}
-              </span>
+          <div className="flex items-center justify-between text-white/80 text-sm">
+            <div>
+              <p className="text-xs text-white/60">Card Number</p>
+              <p className="font-mono">•••• •••• •••• {cardNumber.slice(-4)}</p>
+            </div>
+            <div className="text-right">
+              <p className="text-xs text-white/60">Expires</p>
+              <p className="font-mono">{expiryDate}</p>
             </div>
           </div>
 
           {lastUsedAt && (
-            <div className="mt-3 pt-3 border-t border-white border-opacity-20">
-              <div className="flex items-center text-sm">
-                <span className="text-white text-opacity-90">
-                  Last used at: <span className="font-semibold">{lastUsedAt}</span>
-                </span>
-              </div>
+            <div className="mt-6 pt-4 border-t border-white/20">
+              <p className="text-sm text-white/80">
+                <span className="text-white/60">Last used at:</span> 
+                <span className="font-medium ml-1">{lastUsedAt}</span>
+              </p>
             </div>
           )}
         </CardContent>
-        <CardFooter className="px-5 py-3 bg-white bg-opacity-10 dark:bg-black dark:bg-opacity-20">
-          <div className="text-sm w-full flex justify-between">
+        
+        <CardFooter className="relative z-10 px-8 py-4 bg-black/20 backdrop-blur-sm">
+          <div className="flex justify-between items-center w-full">
             <Button 
               variant="ghost" 
-              className="text-white text-opacity-80 hover:text-opacity-100 hover:bg-white hover:bg-opacity-10 p-0"
+              className="text-white/80 hover:text-white hover:bg-white/10 p-0 h-auto"
             >
-              View card details
+              View Details
             </Button>
             
             {cardActive ? (
               <Button 
                 variant="destructive"
                 onClick={() => setIsBlockDialogOpen(true)}
+                className="bg-red-500/80 hover:bg-red-500/90 backdrop-blur-sm"
               >
-                Block card
+                <Lock className="h-4 w-4 mr-2" />
+                Block Card
               </Button>
             ) : (
               <Button 
                 variant="default"
                 onClick={() => setIsUnblockDialogOpen(true)}
+                className="bg-green-500/80 hover:bg-green-500/90 backdrop-blur-sm"
               >
-                Unblock card
+                <Unlock className="h-4 w-4 mr-2" />
+                Unblock Card
               </Button>
             )}
           </div>

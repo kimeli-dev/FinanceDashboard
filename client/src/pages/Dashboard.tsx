@@ -3,12 +3,12 @@ import BalanceCard from "@/components/BalanceCard";
 import BudgetCard from "@/components/BudgetCard";
 import TransactionList from "@/components/TransactionList";
 import DocumentationList from "@/components/DocumentationList";
-import { Card, Budget, Transaction } from "@/lib/types";
-
+import { Card as CardType, Budget, Transaction } from "@/lib/types";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 export default function Dashboard() {
-  const { data: cards, isLoading: cardsLoading } = useQuery<Card[]>({
+  const { data: cards, isLoading: cardsLoading } = useQuery<CardType[]>({
     queryKey: ['/api/cards']
   });
 
@@ -23,7 +23,7 @@ export default function Dashboard() {
   const studentCard = cards?.find(card => card.type === "student");
   
   return (
-    <div className="dark:bg-gray-900 dark:text-white min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 dark:text-white">
       {/* Page Heading */}
       <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between">
         <div>
@@ -73,6 +73,43 @@ export default function Dashboard() {
             transactions={transactions || []} 
             isLoading={transactionsLoading} 
           />
+        </div>
+
+        {/* Quick Stats Card */}
+        <div className="lg:col-span-1">
+          <Card className="bg-gradient-to-br from-gray-50 to-gray-100 border-0 shadow-lg">
+            <CardContent className="p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">This Month</h3>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Total Transactions</span>
+                  <span className="font-semibold">{transactions?.length || 0}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Average per meal</span>
+                  <span className="font-semibold">
+                    {transactions?.length ? 
+                      new Intl.NumberFormat('en-KE', { style: 'currency', currency: 'KES' })
+                        .format(transactions.reduce((sum, t) => sum + Math.abs(Number(t.amount)), 0) / transactions.length)
+                      : 'KES 0'
+                    }
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Most frequent meal</span>
+                  <span className="font-semibold capitalize">
+                    {transactions?.length ? 
+                      transactions.reduce((acc, t) => {
+                        acc[t.mealType] = (acc[t.mealType] || 0) + 1;
+                        return acc;
+                      }, {} as Record<string, number>).lunch ? 'Lunch' : 'Breakfast'
+                      : 'N/A'
+                    }
+                  </span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Documentation Section */}

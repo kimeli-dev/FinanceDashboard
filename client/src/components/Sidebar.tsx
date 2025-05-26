@@ -26,8 +26,6 @@ export default function Sidebar({ open, setOpen }: SidebarProps) {
     { name: "Dashboard", href: "/", icon: Home },
     { name: "Cards", href: "/cards", icon: CreditCard },
     { name: "Transactions", href: "/transactions", icon: FileText },
-    { name: "Payments", href: "/payments", icon: PlusCircle },
-    { name: "Documentation", href: "/documentation", icon: FileText },
     { name: "Settings", href: "/settings", icon: Settings },
   ];
 

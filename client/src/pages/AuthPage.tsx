@@ -207,7 +207,7 @@ export default function AuthPage() {
           </Tabs>
         </Card>
       </div>
-      
+
       {/* Right Column - Hero */}
       <div className="w-full md:w-1/2 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white p-8 hidden md:flex flex-col justify-center">
         <div className="max-w-md mx-auto">

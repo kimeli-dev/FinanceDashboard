@@ -34,15 +34,19 @@ export default function BalanceCard({ type, balance, cardNumber, expiryDate, las
   }).format(Number(balance));
 
   const handleBlockCard = () => {
-    setCardStatus("false");
-    setIsBlockDialogOpen(false);
-    setPassword("");
+    if (password.trim()) {
+      setCardStatus("false");
+      setIsBlockDialogOpen(false);
+      setPassword("");
+    }
   };
 
   const handleUnblockCard = () => {
-    setCardStatus("true");
-    setIsUnblockDialogOpen(false);
-    setPassword("");
+    if (password.trim()) {
+      setCardStatus("true");
+      setIsUnblockDialogOpen(false);
+      setPassword("");
+    }
   };
 
   return (
@@ -153,6 +157,46 @@ export default function BalanceCard({ type, balance, cardNumber, expiryDate, las
         </CardFooter>
       </Card>
 
+      <Dialog open={isBlockDialogOpen} onOpenChange={setIsBlockDialogOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center text-red-600">
+              <Lock className="h-5 w-5 mr-2" />
+              Block Card
+            </DialogTitle>
+            <DialogDescription>
+              Please confirm your password to block your cafeteria card.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="block-password">Password</Label>
+                <Input 
+                  id="block-password" 
+                  type="password" 
+                  placeholder="Enter your password" 
+                  value={password}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                />
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsBlockDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button 
+              variant="destructive" 
+              onClick={handleBlockCard}
+              disabled={!password.trim()}
+            >
+              Block Card
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       <Dialog open={isUnblockDialogOpen} onOpenChange={setIsUnblockDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
@@ -185,7 +229,7 @@ export default function BalanceCard({ type, balance, cardNumber, expiryDate, las
             <Button 
               variant="default" 
               onClick={handleUnblockCard}
-              disabled={!password}
+              disabled={!password.trim()}
             >
               Unblock Card
             </Button>

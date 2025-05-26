@@ -28,12 +28,30 @@ export default function TransactionList({ transactions, isLoading }: Transaction
   const formatDate = (date: string | Date) => {
     const txDate = new Date(date);
     const now = new Date();
+    const time = txDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
 
     if (txDate.toDateString() === now.toDateString()) {
-      return `Today, ${txDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`;
+      return `Today, ${time}`;
     }
 
-    return txDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    const dateStr = txDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    return `${dateStr}, ${time}`;
+  };
+
+  const getMealTime = (date: string | Date, mealType: string) => {
+    const txDate = new Date(date);
+    const hour = txDate.getHours();
+    
+    if (mealType?.toLowerCase() === 'breakfast' || (hour >= 6 && hour < 11)) {
+      return 'Breakfast time';
+    } else if (mealType?.toLowerCase() === 'lunch' || (hour >= 11 && hour < 16)) {
+      return 'Lunch time';
+    } else if (mealType?.toLowerCase() === 'dinner' || (hour >= 16 && hour < 22)) {
+      return 'Dinner time';
+    } else if (mealType?.toLowerCase() === 'snack') {
+      return 'Snack time';
+    }
+    return 'Meal time';
   };
 
   const formatAmount = (amount: number) => {
@@ -92,6 +110,9 @@ export default function TransactionList({ transactions, isLoading }: Transaction
                           {transaction.cafeteria}
                         </p>
                         <p className="text-xs text-gray-400">
+                          {getMealTime(transaction.date, transaction.mealType)}
+                        </p>
+                        <p className="text-xs text-gray-500">
                           {formatDate(transaction.date)}
                         </p>
                       </div>

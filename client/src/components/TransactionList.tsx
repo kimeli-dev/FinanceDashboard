@@ -13,7 +13,7 @@ interface TransactionListProps {
 
 export default function TransactionList({ transactions, isLoading }: TransactionListProps) {
   const getMealIcon = (mealType: string) => {
-    switch (mealType.toLowerCase()) {
+    switch (mealType?.toLowerCase()) {
       case 'breakfast':
         return (
           <div className="flex-shrink-0 h-10 w-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600">

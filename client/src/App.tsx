@@ -1,4 +1,3 @@
-
 import { Switch, Route, useLocation } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -15,12 +14,17 @@ import { Button } from "@/components/ui/button";
 import { LogOut, Menu, X, MessageSquare } from "lucide-react";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { Card, CardContent } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-
 
 // Feedback form component
 function FeedbackDialog() {
@@ -30,7 +34,6 @@ function FeedbackDialog() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the feedback to your backend
     console.log("Feedback submitted:", { feedback, email });
     setFeedback("");
     setEmail("");
@@ -106,7 +109,7 @@ function MobileMenu() {
       {isOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
           <div className="fixed inset-0 bg-black/50" onClick={() => setIsOpen(false)} />
-          <div className="fixed left-0 top-0 h-full w-64 bg-gray-800 p-4"></div>
+          <div className="fixed left-0 top-0 h-full w-64 bg-gray-800 p-4">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-semibold text-white">Menu</h2>
               <Button
@@ -220,6 +223,7 @@ function Router() {
   );
 }
 
+// Main App Component
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>

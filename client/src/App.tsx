@@ -43,7 +43,11 @@ function FeedbackDialog() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white">
+        <Button 
+          variant="default" 
+          size="icon" 
+          className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg"
+        >
           <MessageSquare className="h-5 w-5" />
         </Button>
       </DialogTrigger>
@@ -133,8 +137,15 @@ function MobileMenu() {
 
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-gray-300">Feedback</span>
-                <FeedbackDialog />
+                <span className="text-gray-300">Send Feedback</span>
+                <Button 
+                  variant="default" 
+                  size="icon" 
+                  className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <MessageSquare className="h-5 w-5" />
+                </Button>
               </div>
 
               <Button
@@ -191,11 +202,11 @@ function Router() {
         <header className="bg-gray-800 shadow-lg border-b border-gray-700">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-16">
-              <div className="flex items-center">
-                <h1 className="text-xl font-bold text-white font-mono tracking-wide">MealCard Info</h1>
+              <div className="flex items-center space-x-4">
+                <MobileMenu />
+                <h1 className="text-xl font-bold text-white font-mono tracking-wide">Card Information</h1>
               </div>
               <div className="flex items-center space-x-2">
-                <MobileMenu />
                 <UserMenu />
               </div>
             </div>

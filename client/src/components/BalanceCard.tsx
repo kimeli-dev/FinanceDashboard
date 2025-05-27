@@ -104,11 +104,6 @@ export default function BalanceCard({ type, balance, cardNumber, expiryDate, las
             </p>
           </div>
 
-          <div className="text-right">
-            <p className="text-xs text-white/60">Expires</p>
-            <p className="font-mono text-white/80">{expiryDate}</p>
-          </div>
-
           {lastUsedAt && (
             <div className="mt-6 pt-4 border-t border-white/20">
               <p className="text-sm text-white/80">

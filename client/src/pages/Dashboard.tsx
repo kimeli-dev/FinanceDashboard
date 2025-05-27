@@ -30,9 +30,8 @@ export default function Dashboard() {
   const studentCard = cards?.find(card => card.type === "student");
   
   // Calculate spent vs remaining for the chart
-  const totalBudget = 5000; // Example monthly budget
   const spent = transactions?.reduce((sum, t) => sum + Math.abs(Number(t.amount)), 0) || 0;
-  const remaining = Math.max(0, totalBudget - spent);
+  const remaining = Number(studentCard?.balance) || 0;
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
